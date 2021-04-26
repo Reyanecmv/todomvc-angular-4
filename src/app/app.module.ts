@@ -1,10 +1,20 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { TodoDataService } from './todo-data.service';
-import { HttpClientModule } from '@angular/common/http';
+import { RouterModule, Routes } from '@angular/router';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { reducers } from './store';
+import { TodoEffects } from './todo/store/effects/todo-effects.service';
+
+const routes: Routes = [
+  {
+    path: 'todo',
+    loadChildren: () => import('./todo/todo.module').then(m => m.TodoModule)
+  },
+  { path: '*', redirectTo: '/todo' },
+];
 
 @NgModule({
   declarations: [
@@ -12,10 +22,11 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   imports: [
     BrowserModule,
-    FormsModule,
-    HttpClientModule
+    RouterModule.forRoot(routes),
+    StoreModule.forRoot(reducers),
+    EffectsModule.forRoot([TodoEffects]),
   ],
-  providers: [TodoDataService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

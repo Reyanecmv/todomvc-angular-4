@@ -3,8 +3,8 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
-import { Todo } from './todo';
-import { TodoDataService } from './todo-data.service';
+import { Todo } from './todo/todo';
+import { TodoDataService } from './todo/todo-data.service';
 
 describe('AppComponent', () => {
   let fixture;
