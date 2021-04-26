@@ -42,10 +42,20 @@ export class TodoEffects {
   deleteToDo$: Observable<Action> = createEffect(() =>
       this.actions$.pipe(
           ofType(TodoActions.deleteTodo),
-              mergeMap((action) => {
-                const todos = this.toDoService.deleteTodoById(action.id);
-                return of(TodoActions.deleteTodoSuccess({ todos: todos }));
-              })
-          )
-      );
+          mergeMap((action) => {
+            const todos = this.toDoService.deleteTodoById(action.id);
+            return of(TodoActions.deleteTodoSuccess({ todos: todos }));
+          })
+      )
+  );
+
+  updateToDo$: Observable<Action> = createEffect(() =>
+      this.actions$.pipe(
+          ofType(TodoActions.editTodo),
+          mergeMap((action) => {
+            const todos = this.toDoService.updateTodoById(action.todo.id, action.todo);
+            return of(TodoActions.editTodoSuccess({ todos: todos }));
+          })
+      )
+  );
 }

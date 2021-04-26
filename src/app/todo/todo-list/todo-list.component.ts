@@ -16,7 +16,7 @@ export class TodoListComponent implements OnInit {
 
   newTodo: Todo = new Todo();
   toDos: Todo[];
-  isAlive: boolean;
+  isAlive = true;
 
   constructor(private todoDataService: TodoDataService, private store: Store<TodoState>) {
   }
@@ -27,7 +27,7 @@ export class TodoListComponent implements OnInit {
   }
 
   addTodo() {
-    this.toDos = this.todoDataService.addTodo(this.newTodo);
+    this.todoDataService.addTodo(this.newTodo);
     this.newTodo = new Todo();
   }
 
@@ -36,7 +36,7 @@ export class TodoListComponent implements OnInit {
   }
 
   removeTodo(todo) {
-    this.toDos = this.todoDataService.deleteTodoById(todo.id);
+    this.todoDataService.deleteTodoById(todo.id);
   }
 
 }

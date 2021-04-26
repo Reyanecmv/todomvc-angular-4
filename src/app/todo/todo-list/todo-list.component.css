@@ -1,0 +1,15 @@
+.view {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    padding-left: 3vw;
+}
+
+.view-checkbox {
+    margin: auto 0;
+}
+
+.checked-view {
+    background: lightgreen;
+    color: darkgreen;
+}

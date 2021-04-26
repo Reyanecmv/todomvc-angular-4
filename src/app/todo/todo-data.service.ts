@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Todo } from './todo';
 import { LocalStorageService } from '../local-storage.service';
+import { cloneDeep } from 'lodash';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class TodoDataService {
 
   // Placeholder for last id so we can simulate
@@ -40,13 +41,12 @@ export class TodoDataService {
   }
 
   // Simulate PUT /todos/:id
-  updateTodoById(id: number, values: Object = {}): Todo {
-    const todo = this.getTodoById(id);
-    if (!todo) {
-      return null;
-    }
-    Object.assign(todo, values);
-    return todo;
+  updateTodoById(id: number, todo: Todo): Todo[] {
+    const todos = this.getAllTodos();
+    const todoIndex = todos.findIndex(todoo => todoo.id === id);
+    todos[todoIndex] = cloneDeep(todo);
+    this.localStorageService.addToLocalStorage<Todo[]>('todo', todos);
+    return todos;
   }
 
   // Simulate GET /todos
@@ -56,16 +56,16 @@ export class TodoDataService {
 
   // Simulate GET /todos/:id
   getTodoById(id: number): Todo {
-    return this.todos
-        .filter(todo => todo.id === id)
-        .pop();
+    const todos = this.getAllTodos();
+    return todos.find(todo => todo.id === id);
   }
 
   // Toggle todo complete
   toggleTodoComplete(todo: Todo) {
-    return this.updateTodoById(todo.id, {
-      complete: !todo.complete
-    });
+    if (todo) {
+      todo.complete = !todo.complete;
+      return this.updateTodoById(todo.id, todo);
+    }
   }
 
 }
